@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-with open('/path/do/secret_key.txt') as f:
+with open('../.alejaja.txt') as f:
     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'prostapka.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'prostapka',   # Nazwa Twojej bazy danych
+        'USER': 'root',   # Nazwa użytkownika MySQL/MariaDB
+        'PASSWORD': 'popsut3buraki',           # Hasło użytkownika MySQL/MariaDB
+        'HOST': 'localhost',           # Host bazodanowy (dla lokalnej instalacji użyj 'localhost')
+        'PORT': '3306',                # Port bazodanowy (dla MySQL domyślnie 3306)
     }
 }
 
