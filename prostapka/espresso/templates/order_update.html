@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{# Load the tag library #}
+{% load django_bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+
+{% block content %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+<div class="container mt-4 text-white">
+  <h1>Aktualizuj dane naprawy</h1>
+  <form method="post" class="row g-3">
+      {% csrf_token %}
+
+      <div class="col-md-6">
+          <label for="{{ form.brand.id_for_label }}" class="form-label text-white">Marka sprzętu</label>
+          {{ form.brand }}
+      </div>
+      <div class="col-md-6">
+          <label for="{{ form.serial.id_for_label }}" class="form-label text-white">Numer seryjny urządzenia</label>
+          {{ form.serial }}
+      </div>
+      <div class="col-md-6">
+          <label for="{{ form.date1.id_for_label }}" class="form-label text-white">Data przyjęcia</label>
+          {{ form.date1 }}
+      </div>
+      <div class="col-md-6">
+          <label for="{{ form.date2.id_for_label }}" class="form-label text-white">Data wydania</label>
+          {{ form.date2 }}
+      </div>
+      <div class="col-md-12">
+          <label for="{{ form.status.id_for_label }}" class="form-label text-white">Status</label>
+          {{ form.status }}
+      </div>
+      <div class="col-md-12">
+          <label for="{{ form.todo.id_for_label }}" class="form-label text-white">Zgłoszona usterka</label>
+          {{ form.todo }}
+      </div>
+      <div class="col-md-12">
+        <label for="{{ form.naprawa.id_for_label }}" class="form-label text-white">Naprawa</label>
+        {{ form.naprawa }}
+    </div>
+      <div class="col-md-12">
+          <label for="{{ form.uwagi.id_for_label }}" class="form-label text-white">Uwagi do zgłoszenia</label>
+          {{ form.uwagi }}
+      </div>
+      
+      <div class="col-12">
+          <button type="submit" class="btn btn-primary mx-3">OK</button>
+          <button type="reset" class="btn btn-secondary mx-3">Wyczyść</button>
+          <a href="javascript:history.back()" class="btn btn-warning mx-3">Anuluj</a>
+      </div>
+  </form>
+  {% if form.errors %}
+  <div class="alert alert-danger mt-3">
+      <strong>Uwaga!</strong> Wystąpiły błędy podczas przetwarzania formularza:<br>
+      {% with error_list=form.errors.items %}
+          {% for field, errors in error_list %}
+              {{ field|capfirst }}: {{ errors.0 }}{% if not forloop.last %},{% endif %}
+          {% endfor %}
+      {% endwith %}
+  </div>
+  {% endif %}
+  
+  
+  
+
+
+
+
+</div>
+
+{% endblock %}

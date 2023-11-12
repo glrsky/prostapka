@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{# Load the tag library #}
+{% load django_bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+
+{% block content %}
+<div class="container mt-4 text-white">
+    <h2>Importuj dane z kopi zapasowej</h2>
+    <div class="alert alert-danger" role="alert">
+  <p>W trakcie importu wszystkie dotychczasowe dane zostaną <strong>usunięte!</strong></p>
+  </div>
+    <form method="post" class="row g3" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Importuj</button>
+        <a href="javascript:history.back()" class="btn btn-warning">Anuluj</a>
+    </form>
+</div>
+{% endblock %}

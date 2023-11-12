@@ -1,0 +1,65 @@
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %} 
+
+
+{% block content %}
+<div class="container bg-dark text-center text-white">
+  <br>
+  <br>
+    <h4>Witaj w elektronicznym serwisie.</h4>
+    <h5>Dziś mamy: {{ aktualny_dzien|date:"d.m.Y" }}</h5>
+    <br><hr>
+    <div class="row bg-dark text-white">
+    <div class="bg-dark text-center text-white col-md-6">  
+    <p class="fs-4"><u>Aktualny status serwisu:</u></p>
+    <p>Ilość urządzeń w naprawie: {{ liczba_napraw }}</p>
+    <p>Ilość urządzeń przyjętych: {{ liczba_przyjetych }}</p>
+    <p>Ilość urządzeń do wydania: {{ liczba_dowydania }}</p>
+    </div>
+    <div class="bg-dark text-center text-white col-md-6">
+    <p class="fs-4""><u>Statystyki:</u></p>
+    <p>Ilość zrealizowanych zleceń: {{ ilosc_napraw_miesiac }}</p>
+    <p>Ilość zrealizowanych zleceń w tym roku: {{ ilosc_napraw_rok }}</p>
+    </div>
+    </div>
+    <hr>
+</div>
+<br>
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-secondary text-center" role="alert">
+ {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+<br>
+<div class="container bg-dark text-white">
+ <p class="fs-6 fw-lighter">Aby dodać nowe zgłoszenie wykorzystaj zakładkę <strong>Nowe zlecenie</strong>, w przypadku wykrycia istniejącego klienta (taki sam numer telefonu lub dane klienta) program zapyta da wybór:<br> (i) utworzenie nowego klienta<br>  (ii) przypisanie zlecenia do istniejącego klienta.<br>
+  Wyszukiwarka znajdująca się po prawej stronie przeszukuje bazę danych po numerze telefonu klienta lub nazwie klienta.<br>
+</p>
+<hr>
+<p class="fs-6 text-warning">  
+  Systematycznie twórz kopię bazy danych za pomocą przycisku w górnej-prawej części ekranu <mark>KOPIA ZAPASOWA</mark>, plik z kopią zostanie zapisany na dysku, w folderze wykorzystywanym do zapisywania plików. 
+  Pamiętaj, że plik z kopią bazy danych jak i pliki z potwierdzeniami, zawierają dane osobowe i powinny być przechowywane w sposób bezpieczny i nie dostępny dla osób trzecich.<br>
+  <strong>Zalecam tworzenie kopii bazy przynajmniej raz w miesiącu.</strong> Kopia bazy danych tworzona jest również na serwerze, niezależnie od kopii tworzonych przez użytkownika.<br>
+  Aby przywrócić dane z kopi zapasowej, kliknij poniższy przycisk:<br>
+  <a class="btn btn-outline-warning" href="{% url 'import_view' %}" role="button">IMPORT KOPII ZAPASOWEJ</a>
+  <hr>
+</p>
+<p class="fs-6 text-info">
+Do każdego zlecenia istnieje możliwość wydruku potwierdzenia. Za pomocą formularza możesz zmienić informacje znajdujące się w stopce potwierdzenia:<br>
+<a class="btn btn-outline-info" href="{% url 'jdg_update' %}" role="button">FORMULARZ</a>
+</p>
+<hr>
+<p class="fs-6 text-warning fw-lighter">
+Zgodnie z przepisami RODO, dane klientów nie mogą być przechowywane dłużej niż wymagany jest interes przedsiębiorcy. Za pomocą poniższego przycisku możesz usunąć dane klientów, którzy zlecali usługi ponad 5 lat temu. 
+Przed usunięciem danych program upewni się, czy dane chcesz usunąć oraz wskaże, które rekordy zostaną usunięte. Dane klienta nadpisywane są losowymi znakami. Dane napraw przypisanych do klienta pozostają.<br>
+<a class="btn btn-outline-warning" href="{% url 'customer_privacy' %}" role="button">RODO</a>
+</p>
+<br>
+
+</div>
+
+{% endblock %}
+
+

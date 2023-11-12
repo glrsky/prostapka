@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="p-3 text-primary-emphasis bg-dark">
+  <div class="bg-dark text-white text-center">
+    <h3>Lista napraw: <span class="text-info-emphasis">{{ status_title }}</span></h3>
+    <hr>
+  </div>
+  <div class="container-fluid">
+    {% for order_item in order %}
+    <div class="row bg-dark text-white border-bottom py-1">
+      <div class="col-md-2">
+        <strong>Klient:</strong><br> {{ order_item.client }}
+      </div>
+      <div class="col-md-2 text-end">
+        <strong>Marka:</strong><br> {{ order_item.brand }}
+      </div>
+      <div class="col-md-2">
+        <strong>Serial no:</strong><br> {{ order_item.serial }}
+      </div>
+      <div class="col-md-2">
+        <strong>Zgłoszone usterki:</strong><br> {{ order_item.todo|default_if_none:'' }}
+      </div>
+      <div class="col-md-1">
+      <strong>Przyjęcie</strong><br> {{ order_item.date1|date:"d.m.Y" }}
+      </div>
+      <div class="col-md-1 text-uppercase {% if order_item.status == 'w realizacji' %}text-warning{% elif order_item.status == 'do wydania' %}text-danger{% elif order_item.status == 'wydano' %}text-success{% elif order_item.status == 'rezygnacja z naprawy' %}text-secondary{% elif order_item.status == 'utylizacja' %}text-white-50{% endif %}">
+      <strong>Status:</strong><br> {{ order_item.status|default_if_none:'' }}
+      </div>
+      <div class="col-md-2">
+        <a href="{% url 'order_detail' order_item.client.id %}" class="btn btn-outline-info mb-1 mt-1">Szczegóły</a>
+        <a href="{% url 'confirm' order_item.id %}" class="btn btn-outline-success mb-1 mt-1">Potwierdzenie</a>
+      </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-info" role="alert">
+      Brak napraw
+    </div>
+    {% endfor %}
+  </div>
+<br><br>
+
+<nav aria-label="Item pagination">
+  <ul class="pagination justify-content-center">
+    {% if items_page.has_previous %}
+      <li class="page-item">
+        <a class="page-link text-light bg-dark" href="?page=1{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" aria-label="First">
+          <span aria-hidden="true">&laquo;&laquo;</span>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link text-light bg-dark" href="?page={{ items_page.previous_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+    {% endif %}
+    {% for page_number in items_page.paginator.page_range %}
+      {% if page_number > items_page.number|add:"-3" and page_number < items_page.number|add:"3" %}
+        {% if page_number == items_page.number %}
+          <li class="page-item active">
+            <span class="page-link bg-white border-dark text-dark">{{ page_number }}</span>
+          </li>
+        {% else %}
+          <li class="page-item">
+            <a class="page-link text-light bg-dark" href="?page={{ page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">{{ page_number }}</a>
+          </li>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    {% if items_page.has_next %}
+      <li class="page-item">
+        <a class="page-link text-light bg-dark" href="?page={{ items_page.next_page_number }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link text-light bg-dark" href="?page={{ items_page.paginator.num_pages }}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}" aria-label="Last">
+          <span aria-hidden="true">&raquo;&raquo;</span>
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+
+</div>
+
+{% endblock %}

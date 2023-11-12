@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% load django_bootstrap5 %}
+
+{% block content %}
+{% bootstrap_messages %}
+<div class="container mt-4 text-white">
+  <h1>Potwierdź istniejącego klienta</h1>
+  <p>Klient o podanych danych już istnieje. Czy chcesz użyć istniejącego klienta, utworzyć nowego klienta czy anulować tworzenie nowego zamówienia?</p>
+  
+  <div class="row">
+    <div class="col-md-6">
+      <p class="text-warning lh-base"><strong>Imię i Nazwisko (wprowadzone przez użytkownika):</strong> {{ client_form.client.value }}</p> 
+      <p class="text-success lh-base"><strong>Imię i Nazwisko (istniejące w bazie danych):</strong> {{ existing_client.client }}</p>
+    </div>
+    <div class="col-md-6">
+      <p class="text-warning lh-base"><strong>Telefon (wprowadzony przez użytkownika):</strong> {{ client_form.phone.value }}</p>
+      <p class="text-success lh-base"><strong>Telefon (istniejący w bazie danych):</strong> {{ existing_client.phone }}</p>
+    </div>
+    <div class="col-md-12 mt-3">
+      <form method="post">
+        {% csrf_token %}
+        {{ client_form.as_p }}
+      </form>
+      <a href="{% url 'client_update' pk=existing_client.id %}" class="btn btn-success">Użyj istniejącego klienta</a>
+      <a href="{% url 'order_detail' client_id=existing_client.id %}" class="btn btn-secondary">Idź do karty klienta</a>
+      <a href="{% url 'create_client' %}" class="btn btn-warning">Utwórz nowego klienta</a>
+      <a href="javascript:history.back()" class="btn btn-danger">Anuluj</a>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

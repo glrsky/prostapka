@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    network_mode: bridge
+    image: glrsky/prostapka:1.0
+    container_name: es
+    ports: 
+      - '0.0.0.0:8000:8000'
+    environment:
+      - SECRET_KEY="DR5pRY#nvsF%ZvtU5#!&^whh&rJUQ&EfN9zKar"
+      - ALLOWED_HOSTS='*','localhost'
+      - DEBUG=TRUE

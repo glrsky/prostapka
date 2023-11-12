@@ -1,0 +1,53 @@
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %} 
+
+
+{% block content %}
+
+<div class="container mt-4 bg-dark text-white text-center">
+  <h1 class="mb-4">Dane klientów do przetworzenia:</h1>
+  <form method="post" action="{% url 'process_customer_data' %}">
+    {% csrf_token %}
+    <label class="form-check-label mb-3 float-end">
+      <input type="checkbox" id="select-all"> Zaznacz wszystko
+    </label>
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th>Pełne Dane Klienta</th>
+          <th>Dane Klienta Po Zmianie</th>
+          <th>Przetwórz</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for client in clients %}
+        <tr>
+          <td>Imię: {{ client.clientold }}, Telefon: {{ client.phoneold }}</td>
+          <td>Imię: {{ client.client }}, Telefon: {{ client.phone }}</td>
+          <td><input type="checkbox" name="client_ids[]" value="{{ client.id }}"></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-danger">Przetwórz zaznaczone dane</button>
+    <a href="javascript:history.back()" class="btn btn-warning">Anuluj</a>
+  </form>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var selectAllCheckbox = document.getElementById('select-all');
+
+    if (selectAllCheckbox) {
+      selectAllCheckbox.addEventListener('change', function() {
+        var checkboxes = document.querySelectorAll('input[name="client_ids[]"]');
+        checkboxes.forEach(function(checkbox) {
+          checkbox.checked = selectAllCheckbox.checked;
+        });
+      });
+    }
+  });
+</script>
+
+
+{% endblock %}

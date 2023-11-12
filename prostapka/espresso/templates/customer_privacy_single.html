@@ -1,0 +1,33 @@
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %} 
+
+
+{% block content %}
+
+
+<div class="container mt-4 bg-dark text-white text-center">
+  <h1 class="mb-4">Dane klienta do przetworzenia:</h1>
+  <form method="post" action="{% url 'process_single_customer_data' client.id %}">
+    {% csrf_token %}
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th>Pełne Dane Klienta</th>
+          <th>Dane Klienta Po Zmianie</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Imię: {{ client.clientold }}, Telefon: {{ client.phoneold }}</td>
+          <td>Imię: {{ client.client }}, Telefon: {{ client.phone }}</td>
+
+        </tr>
+      </tbody>
+    </table>
+    <button type="submit" class="btn btn-danger mx-3">Przetwórz zaznaczone dane</button>
+    <a href="{% url 'order_detail' client.id %}" class="btn btn-secondary mx-3">Idź do karty klienta</a>
+    <a href="javascript:history.back()" class="btn btn-warning mx-3">Anuluj</a>
+  </form>
+</div>
+
+{% endblock %}

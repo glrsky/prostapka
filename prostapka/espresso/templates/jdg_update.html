@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{# Load the tag library #}
+{% load django_bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+
+{% block content %}
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+<div class="container mt-4 text-white">
+  <h1>Aktualizuj informacje</h1>
+  <form method="post" class="row g-3">
+      {% csrf_token %}
+      <div class="col-md-12">
+          <label for="{{ form.pole1.id_for_label }}" class="form-label text-white">Pole 1</label>
+          {{ form.pole1 }}
+      </div>
+      <div class="col-md-12">
+          <label for="{{ form.pole2.id_for_label }}" class="form-label text-white">Pole 2</label>
+          {{ form.pole2 }}
+      </div>
+      <div class="col-md-12">
+          <label for="{{ form.pole3.id_for_label }}" class="form-label text-white">Pole 3</label>
+          {{ form.pole3 }}
+      </div>
+      <div class="col-md-12">
+          <label for="{{ form.pole4.id_for_label }}" class="form-label text-white">Pole 4</label>
+          {{ form.pole4 }}
+      </div>
+      <div class="col-12">
+          <button type="submit" class="btn btn-primary mx-3">Zapisz</button>
+          <a href="{% url 'home' %}" class="btn btn-warning mx-3">Anuluj</a>
+      </div>
+  </form>
+</div>
+
+
+{% endblock %}

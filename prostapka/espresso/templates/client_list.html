@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="p-3 text-primary-emphasis bg-dark">
+  <div class="bg-dark text-white text-center">
+    <h2>--- Lista Klientów ---</h2>
+  </div>
+  <div class="container-fluid">
+    {% for client in clients %}
+      <div class="row bg-dark text-white border-bottom py-1">
+        <div class="col-md-1">
+          <strong>ID Klienta:</strong><br> {{ client.id }}
+        </div>
+        <div class="col-md-5">
+          <strong>Imię i Nazwisko:</strong><br> {{ client.client }}
+        </div>
+        <div class="col-md-3">
+          <strong>Numer Telefonu:</strong><br> {{ client.phone }}
+        </div>
+        <div class="col-md-2">
+          <strong>Uwagi:</strong><br> {{ client.uwagi|default_if_none:'' }}
+        </div>
+        <div class="col-md-1">
+          <a href="{% url 'order_detail' client.id %}" class="btn btn-outline-info">Karta klienta</a>
+        </div>
+      </div>
+    {% empty %}
+      <div class="alert alert-info" role="alert">
+        Brak klientów.
+      </div>
+    {% endfor %}
+  </div>
+  <br><br>
+  <!-- Paginacja -->
+  <nav aria-label="Item pagination">
+    <ul class="pagination justify-content-center">
+      {% if clients.has_previous %}
+        <li class="page-item">
+          <a class="page-link text-light bg-dark" href="?page=1" aria-label="First">
+            <span aria-hidden="true">&laquo;&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link text-light bg-dark" href="?page={{ clients.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+      {% endif %}
+      {% for page_number in clients.paginator.page_range %}
+        {% if page_number > clients.number|add:"-3" and page_number < clients.number|add:"3" %}
+          {% if page_number == clients.number %}
+            <li class="page-item active">
+              <span class="page-link bg-white border-dark text-dark">{{ page_number }}</span>
+            </li>
+          {% else %}
+            <li class="page-item">
+              <a class="page-link text-light bg-dark" href="?page={{ page_number }}">{{ page_number }}</a>
+            </li>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      {% if clients.has_next %}
+        <li class="page-item">
+          <a class="page-link text-light bg-dark" href="?page={{ clients.next_page_number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link text-light bg-dark" href="?page={{ clients.paginator.num_pages }}" aria-label="Last">
+            <span aria-hidden="true">&raquo;&raquo;</span>
+          </a>
+        </li>
+      {% endif %}
+    </ul>
+  </nav>  
+</div>
+{% endblock %}
